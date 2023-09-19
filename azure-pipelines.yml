@@ -90,7 +90,8 @@ steps:
     cp $(Build.Repository.LocalPath)/cicd-scripts/*.* $(Build.BinariesDirectory)/cicd-scripts
     mkdir -p $(Build.BinariesDirectory)/notebooks
     cp $(Build.Repository.LocalPath)/notebooks/*.* $(Build.BinariesDirectory)/notebooks
-    cp $(Build.Repository.LocalPath)/notebooks/**/*.* $(Build.BinariesDirectory)/notebooks
+    cp $(Build.Repository.LocalPath)/notebooks/project_a/*.* $(Build.BinariesDirectory)/notebooks/project_a
+    cp $(Build.Repository.LocalPath)/notebooks/project_b/*.* $(Build.BinariesDirectory)/notebooks/project_b
   displayName: 'Get Changes'
 
 # Create the deployment artifact and then publish it to the
