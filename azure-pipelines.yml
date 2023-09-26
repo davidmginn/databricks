@@ -94,6 +94,8 @@ steps:
     cp $(Build.Repository.LocalPath)/notebooks/project_a/*.* $(Build.BinariesDirectory)/notebooks/project_a
     mkdir -p $(Build.BinariesDirectory)/notebooks/project_b
     cp $(Build.Repository.LocalPath)/notebooks/project_b/*.* $(Build.BinariesDirectory)/notebooks/project_b
+    mkdir -p $(Build.BinariesDirectory)/notebooks/project_c
+    cp $(Build.Repository.LocalPath)/notebooks/project_c/*.* $(Build.BinariesDirectory)/notebooks/project_c
   displayName: 'Get Changes'
 
 # Create the deployment artifact and then publish it to the
