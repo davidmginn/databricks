@@ -114,9 +114,9 @@ stages:
         archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
         replaceExistingArchive: true
 
-    - task: PublishBuildArtifacts@1
-      inputs:
-        ArtifactName: 'DatabricksBuild'
+    #- task: PublishBuildArtifacts@1
+    #  inputs:
+    #    ArtifactName: 'DatabricksBuild'
     
     - publish: '$(Build.ArtifactStagingDirectory)'
       artifact: drop
@@ -147,7 +147,7 @@ stages:
           - bash: |
               pip install databricks-cli
               pip install unittest-xml-reporting
-              displayName: 'Install Databricks CLI and unittest XML reporting'
+            displayName: 'Install Databricks CLI and unittest XML reporting'
           - bash: 'databricks workspace import --language=PYTHON --format=SOURCE --overwrite "$(System.ArtifactsDirectory)/$(Release.PrimaryArtifactSourceAlias)/Databricks/notebooks/dbxdemo-notebook.py" "/Shared/dbxdemo-notebook.py"'
             displayName: 'Copy notebook to workspace'
           - bash: 'databricks workspace import_dir  --overwrite "$(System.ArtifactsDirectory)/$(Release.PrimaryArtifactSourceAlias)/Databricks/notebooks/project_a" "/ProjectA"'
