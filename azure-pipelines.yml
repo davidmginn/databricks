@@ -124,6 +124,7 @@ stages:
   condition:  succeeded()
   jobs:
   - deployment: Deploy
+    environment: dev
     pool:
       vmImage: 'ubuntu-20.04'
     strategy:
