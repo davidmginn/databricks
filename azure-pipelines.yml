@@ -158,7 +158,7 @@ stages:
               script: |
                 pip install databricks-cli
                 pip install unittest-xml-reporting
-                echo -e '$(DATABRICKS_TOKEN)\n$(DATABRICKS_HOST)\" | databricks configure
+                echo -e '$(DATABRICKS_TOKEN)\n$(DATABRICKS_HOST)' | databricks configure
           # - bash: |
           #     pip install databricks-cli
           #     pip install unittest-xml-reporting
