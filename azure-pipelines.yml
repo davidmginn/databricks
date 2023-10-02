@@ -154,6 +154,7 @@ stages:
               pip install databricks-cli
               pip install unittest-xml-reporting
             displayName: 'Install Databricks CLI and unittest XML reporting'
+          - bash: echo $(DATABRICKS_TOKEN)
           - bash: 'databricks workspace import --language=PYTHON --format=SOURCE --overwrite "$(System.ArtifactsDirectory)/$(sourceAlias)/Databricks/notebooks/dbxdemo-notebook.py" "/Shared/dbxdemo-notebook.py"'
             displayName: 'Copy notebook to workspace'
           - bash: 'databricks workspace import_dir  --overwrite "$(System.ArtifactsDirectory)/$(sourceAlias)/Databricks/notebooks/project_a" "/ProjectA"'
