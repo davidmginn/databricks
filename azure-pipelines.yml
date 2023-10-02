@@ -115,7 +115,7 @@ stages:
         rootFolderOrFile: '$(Build.BinariesDirectory)'
         includeRootFolder: false
         archiveType: 'zip'
-        archiveFile: '$(Build.ArtifactStagingDirectory)/$(buildConfiguration).zip'
+        archiveFile: '$(Build.ArtifactStagingDirectory)/$(buildConfiguration)/$(Build.BuildId).zip'
         replaceExistingArchive: true
 
     #- task: PublishBuildArtifacts@1
