@@ -133,6 +133,8 @@ stages:
   jobs:
   - deployment: Deploy
     environment: dev
+    variables:
+    - group: Release
     pool:
       vmImage: 'ubuntu-20.04'
     strategy:
@@ -153,7 +155,6 @@ stages:
           - bash: |
               pip install databricks-cli
               pip install unittest-xml-reporting
-              databricks configure --token $(DATABRICKS_TOKEN) --host $(DATABRICKS_HOST)
             displayName: 'Install Databricks CLI and unittest XML reporting'
           - bash: 'databricks workspace import --language=PYTHON --format=SOURCE --overwrite "$(System.ArtifactsDirectory)/$(sourceAlias)/Databricks/notebooks/dbxdemo-notebook.py" "/Shared/dbxdemo-notebook.py"'
             displayName: 'Copy notebook to workspace'
