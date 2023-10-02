@@ -119,7 +119,7 @@ stages:
     #    ArtifactName: 'DatabricksBuild'
     
     - publish: '$(Build.ArtifactStagingDirectory)'
-      artifact: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+      artifact: '$(Build.BuildId).zip'
 
 - stage: 'Dev'
   displayName: 'Deploy to the dev environment'
