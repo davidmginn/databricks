@@ -158,10 +158,7 @@ stages:
               script: |
                 pip install databricks-cli
                 pip install unittest-xml-reporting
-            env:
-              DATABRICKS_CLUSTER_ID: '0918-175645-apmb4ygn'
-              DATABRICKS_HOST: 'https://adb-5678134785674843.3.azuredatabricks.net'
-              DATABRICKS_TOKEN: 'dapi62f8c3e70eb22099f715ae1dc97d8e6f-3'
+                echo -e '$(DATABRICKS_TOKEN)\n$(DATABRICKS_HOST)\" | databricks configure
           # - bash: |
           #     pip install databricks-cli
           #     pip install unittest-xml-reporting
