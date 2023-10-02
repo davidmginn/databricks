@@ -114,12 +114,12 @@ stages:
         archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
         replaceExistingArchive: true
 
-    #- task: PublishBuildArtifacts@1
-    #  inputs:
-    #    ArtifactName: 'DatabricksBuild'
+    - task: PublishBuildArtifacts@1
+      inputs:
+        ArtifactName: 'DatabricksBuild'
     
-    - publish: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
-      artifact: drop
+    #- publish: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+    #  artifact: drop
 
 - stage: 'Dev'
   displayName: 'Deploy to the dev environment'
@@ -134,8 +134,8 @@ stages:
       runOnce:
         deploy:
           steps:
-          - download: current
-            artifact: drop
+          #- download: current
+          #  artifact: drop
           - task: UsePythonVersion@0
             displayName: 'Use Python 3.8'
             inputs:
@@ -143,6 +143,7 @@ stages:
           - task: ExtractFiles@1
             displayName: 'Extract build pipeline artifact'
             inputs:
+              archiveFilePatterns: '$(Pipeline.Workspace)/**/*.zip'
               destinationFolder: '$(Release.PrimaryArtifactSourceAlias)/Databricks'
           - bash: |
               pip install databricks-cli
