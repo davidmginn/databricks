@@ -117,6 +117,9 @@ stages:
     - task: PublishBuildArtifacts@1
       inputs:
         ArtifactName: 'DatabricksBuild'
+    
+    - publish: '$(Build.ArtifactStagingDirectory)'
+      artifact: drop
 
 - stage: 'Dev'
   displayName: 'Deploy to the dev environment'
