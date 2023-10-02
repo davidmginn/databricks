@@ -152,9 +152,19 @@ stages:
             inputs:
               archiveFilePatterns: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/*.zip'
               destinationFolder: '$(sourceAlias)/Databricks'
-          - bash: |
-              pip install databricks-cli
-              pip install unittest-xml-reporting
+          - task: Bash@3
+            inputs:
+              targetType: 'inline'
+              script: |
+                pip install databricks-cli
+                pip install unittest-xml-reporting
+            env:
+              DATABRICKS_CLUSTER_ID: $(DATABRICKS_CLUSTER_ID)
+              DATABRICKS_HOST: $(DATABRICKS_HOST)
+              DATABRICKS_TOKEN: $(DATABRICKS_TOKEN)
+          # - bash: |
+          #     pip install databricks-cli
+          #     pip install unittest-xml-reporting
             displayName: 'Install Databricks CLI and unittest XML reporting'
           - bash: 'databricks workspace import --language=PYTHON --format=SOURCE --overwrite "$(System.ArtifactsDirectory)/$(sourceAlias)/Databricks/notebooks/dbxdemo-notebook.py" "/Shared/dbxdemo-notebook.py"'
             displayName: 'Copy notebook to workspace'
