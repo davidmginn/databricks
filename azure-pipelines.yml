@@ -3,6 +3,10 @@
 trigger:
 - main
 
+variables:
+  buildConfiguration: 'Release'
+  releaseBranchName: 'main'
+
 stages:
 - stage: 'Build'
   displayName: 'Build job'
@@ -111,7 +115,7 @@ stages:
         rootFolderOrFile: '$(Build.BinariesDirectory)'
         includeRootFolder: false
         archiveType: 'zip'
-        archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+        archiveFile: '$(Build.ArtifactStagingDirectory)/$(buildConfiguration).zip'
         replaceExistingArchive: true
 
     - task: PublishBuildArtifacts@1
@@ -143,7 +147,7 @@ stages:
           - task: ExtractFiles@1
             displayName: 'Extract build pipeline artifact'
             inputs:
-              archiveFilePatterns: '$(Pipeline.Workspace)/drop/**/*.zip'
+              archiveFilePatterns: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/*.zip'
               destinationFolder: '$(Release.PrimaryArtifactSourceAlias)/Databricks'
           - bash: |
               pip install databricks-cli
