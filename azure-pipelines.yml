@@ -143,7 +143,6 @@ stages:
           - task: ExtractFiles@1
             displayName: 'Extract build pipeline artifact'
             inputs:
-              archiveFilePatterns: '$(Pipeline.Workspace)/**/*.zip'
               destinationFolder: '$(Release.PrimaryArtifactSourceAlias)/Databricks'
           - bash: |
               pip install databricks-cli
