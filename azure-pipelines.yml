@@ -117,3 +117,69 @@ stages:
     - task: PublishBuildArtifacts@1
       inputs:
         ArtifactName: 'DatabricksBuild'
+
+- stage: 'Dev'
+  displayName: 'Deploy to the dev environment'
+  dependsOn: Build
+  condition:  succeeded()
+  jobs:
+  - deployment: Deploy
+    pool:
+      vmImage: 'ubuntu-20.04'
+    environment: dev
+    variables:
+    - group: Release
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - download: current
+            artifact: drop
+          - task: UsePythonVersion@0
+            displayName: 'Use Python 3.8'
+            inputs:
+              versionSpec: 3.8
+          - task: ExtractFiles@1
+            displayName: 'Extract build pipeline artifact'
+            inputs:
+              destinationFolder: '$(Release.PrimaryArtifactSourceAlias)/Databricks'
+          - bash: |
+              pip install databricks-cli
+              pip install unittest-xml-reporting
+              displayName: 'Install Databricks CLI and unittest XML reporting'
+          - bash: 'databricks workspace import --language=PYTHON --format=SOURCE --overwrite "$(System.ArtifactsDirectory)/$(Release.PrimaryArtifactSourceAlias)/Databricks/notebooks/dbxdemo-notebook.py" "/Shared/dbxdemo-notebook.py"'
+            displayName: 'Copy notebook to workspace'
+          - bash: 'databricks workspace import_dir  --overwrite "$(System.ArtifactsDirectory)/$(Release.PrimaryArtifactSourceAlias)/Databricks/notebooks/project_a" "/ProjectA"'
+            displayName: 'Copy Project A to workspace'
+          - bash: 'databricks workspace import_dir  --overwrite "$(System.ArtifactsDirectory)/$(Release.PrimaryArtifactSourceAlias)/Databricks/notebooks/project_b" "/ProjectB"'
+            displayName: 'Copy Project B to workspace'
+          - bash: 'databricks workspace import_dir  --overwrite "$(System.ArtifactsDirectory)/$(Release.PrimaryArtifactSourceAlias)/Databricks/notebooks/project_c" "/ProjectC"'
+            displayName: 'Copy Project C to workspace'
+          - bash: 'databricks fs cp  --overwrite "$(System.ArtifactsDirectory)/$(Release.PrimaryArtifactSourceAlias)/Databricks/libraries/python/libs/dbxdemo-0.1.0-py3-none-any.whl" "dbfs:/libraries/python/libs/dbxdemo-0.1.0-py3-none-any.whl"'
+            displayName: 'Copy Python wheel to workspace'
+          - task: PythonScript@0
+            displayName: 'Install Python wheel on cluster'
+            inputs:
+              scriptPath: '$(Release.PrimaryArtifactSourceAlias)/Databricks/cicd-scripts/installWhlLibrary.py'
+              arguments: '--shard=$(DATABRICKS_HOST) --token=$(DATABRICKS_TOKEN) --clusterid=$(DATABRICKS_CLUSTER_ID) --libs=$(System.ArtifactsDirectory)/$(Release.PrimaryArtifactSourceAlias)/Databricks/libraries/python/libs/ --dbfspath=/libraries/python/libs'
+          - script: |
+              mkdir -p $(System.ArtifactsDirectory)/$(Release.PrimaryArtifactSourceAlias)/Databricks/logs/json
+              mkdir -p $(System.ArtifactsDirectory)/$(Release.PrimaryArtifactSourceAlias)/Databricks/logs/xml
+              pip install pytest requests
+            displayName: 'Create integration tests directories'
+          - task: PythonScript@0
+            displayName: 'Run notebook'
+            inputs:
+              scriptPath: '$(Release.PrimaryArtifactSourceAlias)/Databricks/cicd-scripts/executenotebook.py'
+              arguments: '--shard=$(DATABRICKS_HOST) --token=$(DATABRICKS_TOKEN) --clusterid=$(DATABRICKS_CLUSTER_ID) --localpath=$(System.ArtifactsDirectory)/$(Release.PrimaryArtifactSourceAlias)/Databricks/notebooks --workspacepath=/Shared --outfilepath=$(System.ArtifactsDirectory)/$(Release.PrimaryArtifactSourceAlias)/Databricks/logs/json'
+          - task: PythonScript@0
+            displayName: 'Run a Python script'
+            inputs:
+              scriptPath: '$(Release.PrimaryArtifactSourceAlias)/Databricks/cicd-scripts/evaluatenotebookruns.py'
+          - task: PublishTestResults@2
+            displayName: 'Publish Test Results **/TEST-*.xml'
+
+
+
+
+          
