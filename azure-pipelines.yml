@@ -118,12 +118,12 @@ stages:
         archiveFile: '$(Build.ArtifactStagingDirectory)/$(buildConfiguration).zip'
         replaceExistingArchive: true
 
-    - task: PublishBuildArtifacts@1
-      inputs:
-        ArtifactName: 'DatabricksBuild'
+    #- task: PublishBuildArtifacts@1
+    #  inputs:
+    #    ArtifactName: 'DatabricksBuild'
     
-    #- publish: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
-    #  artifact: drop
+    - publish: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+      artifact: drop
 
 - stage: 'Dev'
   displayName: 'Deploy to the dev environment'
