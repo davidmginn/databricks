@@ -183,7 +183,7 @@ stages:
           - task: PythonScript@0
             displayName: 'Install Python wheel on cluster'
             inputs:
-              scriptPath: '$(sourceAlias)/Databricks/cicd-scripts/installWhlLibrary.py'
+              scriptPath: '$(System.ArtifactsDirectory)/$(sourceAlias)/Databricks/cicd-scripts/installWhlLibrary.py'
               arguments: '--shard=$(DATABRICKS_HOST) --token=$(DATABRICKS_TOKEN) --clusterid=$(DATABRICKS_CLUSTER_ID) --libs=$(System.ArtifactsDirectory)/$(sourceAlias)/Databricks/libraries/python/libs/ --dbfspath=/libraries/python/libs'
           - script: |
               mkdir -p $(System.ArtifactsDirectory)/$(sourceAlias)/Databricks/logs/json
@@ -193,12 +193,12 @@ stages:
           - task: PythonScript@0
             displayName: 'Run notebook'
             inputs:
-              scriptPath: '$(sourceAlias)/Databricks/cicd-scripts/executenotebook.py'
+              scriptPath: '$(System.ArtifactsDirectory)/$(sourceAlias)/Databricks/cicd-scripts/executenotebook.py'
               arguments: '--shard=$(DATABRICKS_HOST) --token=$(DATABRICKS_TOKEN) --clusterid=$(DATABRICKS_CLUSTER_ID) --localpath=$(System.ArtifactsDirectory)/$(sourceAlias)/Databricks/notebooks --workspacepath=/Shared --outfilepath=$(System.ArtifactsDirectory)/$(sourceAlias)/Databricks/logs/json'
           - task: PythonScript@0
             displayName: 'Run a Python script'
             inputs:
-              scriptPath: '$(sourceAlias)/Databricks/cicd-scripts/evaluatenotebookruns.py'
+              scriptPath: '$(System.ArtifactsDirectory)/$(sourceAlias)/Databricks/cicd-scripts/evaluatenotebookruns.py'
           - task: PublishTestResults@2
             displayName: 'Publish Test Results **/TEST-*.xml'
 
