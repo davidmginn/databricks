@@ -160,17 +160,17 @@ stages:
                 pip install unittest-xml-reporting
                 echo $(DATABRICKS_HOST)
                 echo $(DATABRICKS_TOKEN)
+            displayName: 'Install Databricks CLI and unittest XML reporting'
             # Use environment variables to pass Azure Databricks workspace and cluster
             # information to the Databricks Connect configuration function.
           - script: |
               echo "y
-              $(DATABRICKS_TOKEN)
-              $(DATABRICKS_HOST)" | databricks configure
-              displayName: 'Configure Databricks'
+              $(DATABRICKS_HOST)"
+              $(DATABRICKS_TOKEN) | databricks configure --token
+            displayName: 'Configure Databricks'
           # - bash: |
           #     pip install databricks-cli
           #     pip install unittest-xml-reporting
-            displayName: 'Install Databricks CLI and unittest XML reporting'
           - bash: 'databricks workspace import --language=PYTHON --format=SOURCE --overwrite "$(System.ArtifactsDirectory)/$(sourceAlias)/Databricks/notebooks/dbxdemo-notebook.py" "/Shared/dbxdemo-notebook.py"'
             displayName: 'Copy notebook to workspace'
           - bash: 'databricks workspace import_dir  --overwrite "$(System.ArtifactsDirectory)/$(sourceAlias)/Databricks/notebooks/project_a" "/ProjectA"'
