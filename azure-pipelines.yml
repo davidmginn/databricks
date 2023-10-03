@@ -151,7 +151,7 @@ stages:
             displayName: 'Extract build pipeline artifact'
             inputs:
               archiveFilePatterns: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/*.zip'
-              destinationFolder: '$(sourceAlias)/Databricks'
+              destinationFolder: '$(System.ArtifactsDirectory)/$(sourceAlias)/Databricks'
           - task: Bash@3
             inputs:
               targetType: 'inline'
