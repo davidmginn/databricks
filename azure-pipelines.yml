@@ -6,7 +6,8 @@ trigger:
 variables:
   buildConfiguration: 'Release'
   releaseBranchName: 'main'
-  sourceAlias: '$(System.ArtifactsDirectory)/_davidmginn.databricks'
+  sourceAlias: '_davidmginn.databricks'
+  # sourceAlias: '$(System.ArtifactsDirectory)/_davidmginn.databricks'
 
 stages:
 - stage: 'Build'
