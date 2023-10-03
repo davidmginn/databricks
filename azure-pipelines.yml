@@ -158,8 +158,6 @@ stages:
               script: |
                 pip install databricks-cli
                 pip install unittest-xml-reporting
-                echo $(DATABRICKS_HOST)
-                echo $(DATABRICKS_TOKEN)
             displayName: 'Install Databricks CLI and unittest XML reporting'
             # Use environment variables to pass Azure Databricks workspace and cluster
             # information to the Databricks Connect configuration function.
