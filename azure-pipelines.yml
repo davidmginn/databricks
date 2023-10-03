@@ -164,9 +164,8 @@ stages:
             # Use environment variables to pass Azure Databricks workspace and cluster
             # information to the Databricks Connect configuration function.
           - script: |
-              echo "y
-              $(DATABRICKS_HOST)"
-              $(DATABRICKS_TOKEN) | databricks configure --token
+              echo "$(DATABRICKS_HOST)
+              $(DATABRICKS_TOKEN)" | databricks configure --token
             displayName: 'Configure Databricks'
           # - bash: |
           #     pip install databricks-cli
